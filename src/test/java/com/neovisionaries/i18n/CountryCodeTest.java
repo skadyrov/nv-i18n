@@ -16,16 +16,13 @@
 package com.neovisionaries.i18n;
 
 
-import static com.neovisionaries.i18n.CountryCode.getByCode;
-import static com.neovisionaries.i18n.CountryCode.getByCodeIgnoreCase;
-import static com.neovisionaries.i18n.CountryCode.getByLocale;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+
 import java.util.List;
 import java.util.Locale;
-import org.junit.Test;
+
+import static com.neovisionaries.i18n.CountryCode.getByCode;
+import static org.junit.Assert.*;
 
 
 public class CountryCodeTest
@@ -128,48 +125,9 @@ public class CountryCodeTest
 
 
     @Test
-    public void test12()
-    {
-        Locale undefinedLocale = CountryCode.UNDEFINED.toLocale();
-
-        try
-        {
-            Locale root = (Locale)Locale.class.getDeclaredField("ROOT").get(null);
-            assertSame(root, undefinedLocale);
-        }
-        catch (Exception e)
-        {
-            assertEquals("", undefinedLocale.getLanguage());
-            assertEquals("", undefinedLocale.getCountry());
-        }
-    }
-
-
-    @Test
-    public void test13()
-    {
-        assertSame(CountryCode.UNDEFINED, getByCode("UNDEFINED"));
-    }
-
-
-    @Test
     public void test14()
     {
         assertNull(getByCode("undefined"));
-    }
-
-
-    @Test
-    public void test15()
-    {
-        assertSame(CountryCode.UNDEFINED, getByCodeIgnoreCase("undefined"));
-    }
-
-
-    @Test
-    public void test16()
-    {
-        assertSame(CountryCode.UNDEFINED, getByLocale(new Locale("", "")));
     }
 
 
@@ -184,5 +142,14 @@ public class CountryCodeTest
     public void test18()
     {
         assertNull(getByCode(""));
+    }
+
+    @Test
+    public void testLocale()
+    {
+        for(CountryCode code : CountryCode.values()){
+            System.out.println(code.getName());
+        }
+        assertNull(null, null);
     }
 }

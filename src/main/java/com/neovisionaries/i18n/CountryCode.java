@@ -95,23 +95,6 @@ import java.util.regex.Pattern;
 public enum CountryCode
 {
 
-    /**
-     * Undefined [UNDEFINED, null, -1, User assigned]
-     *
-     * <p>
-     * This is not an official ISO 3166-1 code.
-     * </p>
-     *
-     * @since 1.14
-     */
-    UNDEFINED("Undefined", null, -1, Assignment.USER_ASSIGNED)
-    {
-        @Override
-        public Locale toLocale()
-        {
-            return LocaleCode.undefined.toLocale();
-        }
-    },
 
     /**
      * <a href="http://en.wikipedia.org/wiki/Ascension_Island">Ascension Island</a>
@@ -2200,8 +2183,6 @@ public enum CountryCode
      * @return
      *         The <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2"
      *         >ISO 3166-1 alpha-2</a> code.
-     *         {@link CountryCode#UNDEFINED} returns {@code "UNDEFINED"}
-     *         which is not an official ISO 3166-1 alpha-2 code.
      */
     public String getAlpha2()
     {
@@ -2218,7 +2199,7 @@ public enum CountryCode
      *         >ISO 3166-1 alpha-3</a> code.
      *         Some country codes reserved exceptionally (such as {@link #EU})
      *         returns {@code null}.
-     *         {@link CountryCode#UNDEFINED} returns {@code null}, too.
+     *
      */
     public String getAlpha3()
     {
@@ -2235,7 +2216,6 @@ public enum CountryCode
      *         >ISO 3166-1 numeric</a> code.
      *         Country codes reserved exceptionally (such as {@link #EU})
      *         returns {@code -1}.
-     *         {@link CountryCode#UNDEFINED} returns {@code -1}, too.
      */
     public int getNumeric()
     {
@@ -2321,15 +2301,6 @@ public enum CountryCode
      * </tr>
      * </table>
      *
-     * <p>
-     * In addition, {@code toLocale()} of {@link CountryCode#UNDEFINED
-     * CountryCode.UNDEFINED} behaves a bit differently. It returns
-     * {@link Locale#ROOT Locale.ROOT} when it is available (i.e. when
-     * the version of Java SE is 1.6 or higher). Otherwise, it returns
-     * a {@code Locale} instance whose language and country are empty
-     * strings. Even in the latter case, the same instance is returned
-     * on every call.
-     * </p>
      *
      * @return
      *         A {@code Locale} instance that matches this {@code CountryCode}.
@@ -2403,8 +2374,6 @@ public enum CountryCode
      *         An ISO 3166-1 <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2"
      *         >alpha-2</a> or <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3"
      *         >alpha-3</a> code.
-     *         When {@code "UNDEFINED"} is given, {@link #UNDEFINED CountryCode.UNDEFINED}
-     *         is returned.
      *
      * @return
      *         A {@code CountryCode} instance, or {@code null} if not found.
@@ -2485,10 +2454,7 @@ public enum CountryCode
 
             case 9:
                 code = canonicalize(code, caseSensitive);
-                if ("UNDEFINED".equals(code))
-                {
-                    return CountryCode.UNDEFINED;
-                }
+
                 // FALLTHROUGH
 
             default:
@@ -2507,9 +2473,7 @@ public enum CountryCode
      * @return
      *         A {@code CountryCode} instance, or {@code null} if not found.
      *         When {@link Locale#getCountry() getCountry()} method of the
-     *         given {@code Locale} instance returns {@code null} or an
-     *         empty string, {@link #UNDEFINED CountryCode.UNDEFINED} is
-     *         returned.
+     *         given {@code Locale} instance returns {@code null}
      *
      * @see Locale#getCountry()
      */
@@ -2522,11 +2486,6 @@ public enum CountryCode
 
         // Locale.getCountry() returns an uppercase ISO 3166 2-letter code.
         String country = locale.getCountry();
-
-        if (country == null || country.length() == 0)
-        {
-            return CountryCode.UNDEFINED;
-        }
 
         return getByCode(country, true);
     }
